@@ -1,0 +1,32 @@
+# Copy this content to your .env file in the project root
+
+# Base URLs
+BASE_URL=https://kmc-hub-git-feat-new-checkout-kmc-dev-team.vercel.app
+ALPHA_HUB_URL=https://alpha-hub.kmc.solutions
+API_BASE_URL=https://erp-hub-api-v2-new-checkout.azurewebsites.net
+
+# Page URLs - Guest Meeting (optional, will be constructed from BASE_URL if not provided)
+# LOGIN_URL=https://kmc-hub-git-feat-new-checkout-kmc-dev-team.vercel.app/auth/sign-in
+# LOGIN_URL_MOBILE=https://kmc-hub-git-feat-new-checkout-kmc-dev-team.vercel.app/auth/login
+# SIGNUP_URL=https://kmc-hub-git-feat-new-checkout-kmc-dev-team.vercel.app/auth/sign-up
+# DASHBOARD_URL=https://kmc-hub-git-feat-new-checkout-kmc-dev-team.vercel.app/
+# ROOM_SELECTION_URL=https://kmc-hub-git-feat-new-checkout-kmc-dev-team.vercel.app/products/board-room/3/room-selection
+# BILLING_CHECKOUT_URL=https://alpha-hub.kmc.solutions/guest-booking/3/checkout?bsid=26&roomTypeId=10&am=
+
+# Page URLs - Proworking (optional, will be constructed from BASE_URL if not provided)
+# PROWORKING_DASHBOARD_URL=https://kmc-hub-git-feat-new-checkout-kmc-dev-team.vercel.app/
+# PROWORKING_LOGIN_URL=https://kmc-hub-git-feat-new-checkout-kmc-dev-team.vercel.app/auth/sign-in
+
+# API Endpoints (relative paths)
+API_LOGIN=/api/Hub/login
+API_BOARD_ROOM_LIST=/api/hub/buildings/packages/board-room/list
+API_PROWORKING_PREMIUM_LIST=/api/hub/buildings/packages/proworking-premium/list
+API_ROOM_AVAILABILITY=/api/hub/meetings/rooms/56/availability
+API_BUILDING_PACKAGES=/api/hub/buildings/3/packages/board-room
+
+# Full API URLs (optional, will be constructed from API_BASE_URL if not provided)
+# API_BOARD_ROOM_LIST_FULL=https://erp-hub-api-v2-new-checkout.azurewebsites.net/api/hub/buildings/packages/board-room/list
+# API_PROWORKING_PREMIUM_LIST_FULL=https://erp-hub-api-v2-new-checkout.azurewebsites.net/api/hub/buildings/packages/proworking-premium/list
+# API_ROOM_AVAILABILITY_FULL=https://erp-hub-api-v2-new-checkout.azurewebsites.net/api/hub/meetings/rooms/56/availability?date=2025-11-28&roomId=56&dividerUnit=60
+# API_BUILDING_PACKAGES_FULL=https://erp-hub-api-v2-new-checkout.azurewebsites.net/api/hub/buildings/3/packages/board-room
+

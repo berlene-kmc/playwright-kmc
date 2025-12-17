@@ -1,0 +1,15 @@
+export const BILLING_LOCATORS = {
+  MEETING_PURPOSE: '//input[@id="meetingPurpose"]',
+  FIRST_NAME: '//input[@id="firstName"]',
+  LAST_NAME: '//input[@id="lastName"]',
+  TIN: '//input[@id="tin"]',
+  EMAIL: '//input[@id="email"]',
+  PHONE: '//input[@autocomplete="tel"]',
+  ADDRESS: '//input[@id="line1"]',
+  CITY: '//input[@id="city"]',
+  STATE: '//input[@id="state"]',
+  COUNTRY: '//input[@id="country"]',
+  ZIP_CODE: '//input[@id="zipCode"]',
+  AGREE_CHECKBOX: '//input[@type="checkbox"]',
+  CONTINUE_BUTTON: '//button[contains(text(), "Continue")]',
+};
