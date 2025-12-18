@@ -7,14 +7,20 @@ test.describe('Job Posts - Flamingo', () => {
     
     await page.waitForLoadState('networkidle');
     
-    // Fill search input and press Enter (this will trigger search and wait for results)
+    await jobPosts.waitForJobPostAPIs();
+    await jobPosts.assertJobPostAPIs();
+    
     await jobPosts.fillSearchInputAndPressEnter('QA');
     
-    // Additional wait to ensure results are fully loaded
     await page.waitForLoadState('networkidle');
     
-    // Click the first job card from search results
+    const jobSlug = 'qa-automation-engineer-f38876';
     await jobPosts.clickFirstJobCard();
+    
+    await jobPosts.waitForJobCardAPIs(jobSlug);
+    await jobPosts.assertJobCardAPIs(jobSlug);
+    
+    await jobPosts.clickNextButton();
   });
 
 });

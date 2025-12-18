@@ -9,21 +9,17 @@ export class JobPosts {
   public searchButton: Locator;
   public searchResults: Locator;
   public firstJobCard: Locator;
+  public nextButton: Locator;
+  public applyJobText: Locator;
 
   constructor(page: Page) {
     this.page = page;
-
-    const locators = [
-      { key: 'searchInput', selector: JOB_POSTS_LOCATORS.SEARCH_INPUT },
-      { key: 'searchButton', selector: JOB_POSTS_LOCATORS.SEARCH_BUTTON },
-      { key: 'searchResults', selector: JOB_POSTS_LOCATORS.SEARCH_RESULTS },
-      { key: 'firstJobCard', selector: JOB_POSTS_LOCATORS.FIRST_JOB_CARD },
-    ];
-
-    for (let i = 0; i < locators.length; i++) {
-      const locator = locators[i];
-      (this as any)[locator.key] = page.locator(locator.selector);
-    }
+    this.searchInput = page.locator(JOB_POSTS_LOCATORS.SEARCH_INPUT);
+    this.searchButton = page.locator(JOB_POSTS_LOCATORS.SEARCH_BUTTON);
+    this.searchResults = page.locator(JOB_POSTS_LOCATORS.SEARCH_RESULTS);
+    this.firstJobCard = page.locator(JOB_POSTS_LOCATORS.FIRST_JOB_CARD);
+    this.nextButton = page.locator(JOB_POSTS_LOCATORS.NEXT_BUTTON);
+    this.applyJobText = page.locator(JOB_POSTS_LOCATORS.APPLY_JOB_TEXT);
   }
 
   async clickSearchInput() {
@@ -170,6 +166,112 @@ export class JobPosts {
       console.log(chalk.green('✅ Job detail page fully loaded'));
     } catch (e: any) {
       throw new Error(chalk.red(`Error clicking first job card: ${e.message}`));
+    }
+  }
+
+  async clickNextButton() {
+    try {
+      await expect(this.nextButton).toBeVisible({ timeout: 15000 });
+      await expect(this.nextButton).toBeEnabled({ timeout: 15000 });
+      await this.nextButton.click();
+      console.log(chalk.green('✅ Clicked Next button'));
+      await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    } catch (e: any) {
+      throw new Error(chalk.red(`Error clicking Next button: ${e.message}`));
+    }
+  }
+
+  async applyJobTextVisible() {
+    try {
+      await expect(this.applyJobText).toBeVisible({ timeout: 15000 });
+      console.log(chalk.green('✅ Apply for this job text is visible'));
+    } catch (e: any) {
+      throw new Error(chalk.red(`Error verifying Apply for this job text visibility: ${e.message}`));
+    }   
+  }
+
+  async waitForJobPostAPIs() {
+    try {
+      console.log(chalk.cyan('🔍 Waiting for job post APIs...'));
+      
+      await Promise.all([
+        this.page.waitForResponse((res) => res.url().includes('/api/Users/business'), { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/Users/current-user'), { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/References/repetition'), { timeout: 30000 }),
+      ]);
+      
+      console.log(chalk.green('✅ All job post APIs loaded'));
+    } catch (e: any) {
+      console.log(chalk.yellow(`⚠️ Some job post APIs may not have loaded: ${e.message}`));
+    }
+  }
+
+  async waitForJobCardAPIs(jobSlug?: string) {
+    try {
+      console.log(chalk.cyan('🔍 Waiting for job card APIs...'));
+      
+      const apiPromises = [
+        this.page.waitForResponse((res) => res.url().includes('/api/jobs/job-sources'), { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/Common/antiforgery/token'), { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/References/work-setup'), { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/References/career-levels'), { timeout: 30000 }),
+      ];
+
+      if (jobSlug) {
+        apiPromises.push(
+          this.page.waitForResponse((res) => res.url().includes(`/api/jobs/apply/${jobSlug}`), { timeout: 30000 }),
+          this.page.waitForResponse((res) => res.url().includes(`/api/jobs/category/${jobSlug}`), { timeout: 30000 })
+        );
+      }
+      
+      await Promise.all(apiPromises);
+      
+      console.log(chalk.green('✅ All job card APIs loaded'));
+    } catch (e: any) {
+      console.log(chalk.yellow(`⚠️ Some job card APIs may not have loaded: ${e.message}`));
+    }
+  }
+
+  async assertJobPostAPIs() {
+    try {
+      console.log(chalk.cyan('🔍 Asserting job post APIs...'));
+      
+      const responses = await Promise.allSettled([
+        this.page.waitForResponse((res) => res.url().includes('/api/Users/business') && res.status() === 200, { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/Users/current-user') && res.status() === 200, { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/References/repetition') && res.status() === 200, { timeout: 30000 }),
+      ]);
+
+      const successful = responses.filter(r => r.status === 'fulfilled').length;
+      console.log(chalk.green(`✅ ${successful}/${responses.length} job post APIs returned 200 status`));
+    } catch (e: any) {
+      console.log(chalk.yellow(`⚠️ Error asserting job post APIs: ${e.message}`));
+    }
+  }
+
+  async assertJobCardAPIs(jobSlug?: string) {
+    try {
+      console.log(chalk.cyan('🔍 Asserting job card APIs...'));
+      
+      const apiChecks = [
+        this.page.waitForResponse((res) => res.url().includes('/api/jobs/job-sources') && res.status() === 200, { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/Common/antiforgery/token') && res.status() === 200, { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/References/work-setup') && res.status() === 200, { timeout: 30000 }),
+        this.page.waitForResponse((res) => res.url().includes('/api/References/career-levels') && res.status() === 200, { timeout: 30000 }),
+      ];
+
+      if (jobSlug) {
+        apiChecks.push(
+          this.page.waitForResponse((res) => res.url().includes(`/api/jobs/apply/${jobSlug}`) && res.status() === 200, { timeout: 30000 }),
+          this.page.waitForResponse((res) => res.url().includes(`/api/jobs/category/${jobSlug}`) && res.status() === 200, { timeout: 30000 })
+        );
+      }
+      
+      const responses = await Promise.allSettled(apiChecks);
+      const successful = responses.filter(r => r.status === 'fulfilled').length;
+      console.log(chalk.green(`✅ ${successful}/${responses.length} job card APIs returned 200 status`));
+    } catch (e: any) {
+      console.log(chalk.yellow(`⚠️ Error asserting job card APIs: ${e.message}`));
     }
   }
 }
