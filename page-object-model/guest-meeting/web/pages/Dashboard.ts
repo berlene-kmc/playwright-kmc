@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 import chalk from 'chalk';
-import { env } from '../../config/env.config';
+import { env } from '../../../config/env.config';
 
 export class Dashboard {
   private page: Page;
@@ -22,8 +22,9 @@ export class Dashboard {
       await solutionsDropdown.click();
       console.log(chalk.green('✅ Clicked Solutions dropdown'));
 
-    } catch (e: any) {
-      throw new Error(chalk.red(`Error clicking Solutions dropdown: ${e.message}`));
+    } catch (e: unknown) {
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      throw new Error(chalk.red(`Error clicking Solutions dropdown: ${errorMessage}`));
     }
   }
 
@@ -38,8 +39,9 @@ export class Dashboard {
       await meetingRoomsButton.click({ force: true });
       console.log(chalk.green('✅ Clicked Meeting Rooms button'));
 
-    } catch (e: any) {
-      throw new Error(chalk.red(`Error clicking Meeting Rooms button: ${e.message}`));
+    } catch (e: unknown) {
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      throw new Error(chalk.red(`Error clicking Meeting Rooms button: ${errorMessage}`));
     }
   }
 
@@ -51,8 +53,9 @@ export class Dashboard {
       await getStartedButton.click();
       console.log(chalk.green('✅ Clicked Get Started button'));
 
-    } catch (e: any) {
-      throw new Error(chalk.red(`Error clicking Get Started button: ${e.message}`));
+    } catch (e: unknown) {
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      throw new Error(chalk.red(`Error clicking Get Started button: ${errorMessage}`));
     }
   }
 
@@ -64,8 +67,9 @@ export class Dashboard {
       await boardRoom.click();
       console.log(chalk.green('✅ Clicked Board Room button'));
 
-    } catch (e: any) {
-      throw new Error(chalk.red(`Error clicking Board Room button: ${e.message}`));
+    } catch (e: unknown) {
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      throw new Error(chalk.red(`Error clicking Board Room button: ${errorMessage}`));
     }
   }
 
