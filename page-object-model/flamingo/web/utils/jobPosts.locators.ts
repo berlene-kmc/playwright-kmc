@@ -4,6 +4,6 @@ export const JOB_POSTS_LOCATORS = {
   SEARCH_RESULTS: '[data-slot="job-card"], [class*="job"], [class*="result"]',
   FIRST_JOB_CARD: 'div.relative.border.border-gray-200.rounded-lg:has(a[href*="/careers/"])',
   NEXT_BUTTON: 'button[data-slot="button"]:has-text("Next")',
-  APPLY_JOB_TEXT: 'text=Apply for this job',
+  APPLY_JOB_LINK: 'a[href="/login"]:has-text("Apply for this job")',
 };
 

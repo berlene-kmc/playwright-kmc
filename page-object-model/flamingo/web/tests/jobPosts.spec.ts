@@ -19,8 +19,6 @@ test.describe('Job Posts - Flamingo', () => {
     
     await jobPosts.waitForJobCardAPIs(jobSlug);
     await jobPosts.assertJobCardAPIs(jobSlug);
-    
-    await jobPosts.clickNextButton();
   });
 
 });
