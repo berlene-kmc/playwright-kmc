@@ -1,6 +1,7 @@
 import { Page, expect } from '@playwright/test';
 import chalk from 'chalk';
 import { env } from '../../config/env.config';
+import { DASHBOARD_LOCATORS } from '../utils/dashboard.locators';
 
 export class Dashboard {
   private page: Page;
@@ -16,7 +17,7 @@ export class Dashboard {
 
  async clickSolutionsDropdown() {
     try {
-      const solutionsDropdown = this.page.locator('//button[normalize-space(text())="Solutions"]');
+      const solutionsDropdown = this.page.locator(DASHBOARD_LOCATORS.SOLUTIONS_DROPDOWN);
       await expect(solutionsDropdown).toBeVisible({ timeout: 60000 });
       await expect(solutionsDropdown).toBeEnabled({ timeout: 60000 });
       await solutionsDropdown.click();
@@ -29,10 +30,10 @@ export class Dashboard {
 
   async clickMenuBurger() {
     try {
-      const menuBurger = this.page.locator('//button[@aria-haspopup="dialog" and @aria-expanded="false"]');
+      const menuBurger = this.page.locator(DASHBOARD_LOCATORS.MENU_BURGER);
       await expect(menuBurger).toBeVisible({ timeout: 60000 });
       await expect(menuBurger).toBeEnabled({ timeout: 60000 });
-      await menuBurger  .click();
+      await menuBurger.click();
       console.log(chalk.green('✅ Clicked Menu dropdown'));
 
     } catch (e: any) {
@@ -42,8 +43,7 @@ export class Dashboard {
 
   async clickMeetingRoomsButton() {
     try {
-      const meetingRoomsButton = this.page.locator(
-        '//a[@href="/meeting-room" and .//div[contains(text(), "Meeting Rooms")]]');
+      const meetingRoomsButton = this.page.locator(DASHBOARD_LOCATORS.MEETING_ROOMS_BUTTON);
 
       await expect(meetingRoomsButton).toBeVisible({ timeout: 60000 });
       await expect(meetingRoomsButton).toBeEnabled({ timeout: 60000 });
@@ -57,7 +57,7 @@ export class Dashboard {
 
   async clickGetStarted() {
     try {
-      const getStartedButton = this.page.locator('//div[@class="mt-8"]');
+      const getStartedButton = this.page.locator(DASHBOARD_LOCATORS.GET_STARTED_BUTTON);
       await expect(getStartedButton).toBeVisible({ timeout: 60000 });
       await expect(getStartedButton).toBeEnabled({ timeout: 60000 });
       await getStartedButton.click();
@@ -70,7 +70,7 @@ export class Dashboard {
 
   async clickBoardRoom() {
     try {
-      const boardRoom = this.page.locator('//button[contains(.,\'Get Started\')]').nth(1);
+      const boardRoom = this.page.locator(DASHBOARD_LOCATORS.BOARD_ROOM_BUTTON).nth(1);
       await expect(boardRoom).toBeVisible({ timeout: 60000 });
       await expect(boardRoom).toBeEnabled({ timeout: 60000 });
       await boardRoom.click();

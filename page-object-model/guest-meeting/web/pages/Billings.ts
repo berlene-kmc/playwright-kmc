@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import chalk from 'chalk';
 import { BILLING_LOCATORS } from '../utils/billing.locators';
-import { env } from '../../config/env.config';
+import { env } from '../../../config/env.config'; 
 
 export interface BillingData {
   meetingPurpose: string;

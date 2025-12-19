@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from "@playwright/test";
 import chalk from "chalk";
 import { AssertEndpoint } from "../utils/assetEndPoints";
-import { env } from '../../config/env.config'; 
+import { env } from '../../../config/env.config'; 
 
 export class Location {
   private page: Page;

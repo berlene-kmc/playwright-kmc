@@ -1,6 +1,6 @@
 import { Page, expect, Locator } from '@playwright/test';
 import chalk from 'chalk';
-import { env } from '../../config/env.config';
+import { env } from '../../../config/env.config'; 
 
 export class LoginPage {
   private page: Page;
