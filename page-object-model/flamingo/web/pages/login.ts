@@ -8,12 +8,14 @@ export class Login {
   public emailInput: Locator;
   public passwordInput: Locator;
   public signInButton: Locator;
+  public createAccountLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.emailInput = page.locator(LOGIN_LOCATORS.EMAIL_INPUT);
     this.passwordInput = page.locator(LOGIN_LOCATORS.PASSWORD_INPUT);
     this.signInButton = page.locator(LOGIN_LOCATORS.SIGN_IN_BUTTON);
+    this.createAccountLink = page.locator(LOGIN_LOCATORS.CREATE_ACCOUNT_LINK);
   }
 
   async goto() {
@@ -73,5 +75,20 @@ export class Login {
     await this.fillEmail(emailToUse);
     await this.fillPassword(passwordToUse);
     await this.clickSignIn();
+  }
+
+  async clickCreateAccountLink() {
+    try {
+      await expect(this.createAccountLink).toBeVisible({ timeout: 15000 });
+      await this.createAccountLink.click();
+      console.log(chalk.green('✅ Clicked Create an account link'));
+      await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    } catch (e: any) {
+      throw new Error(chalk.red(`Error clicking Create an account link: ${e.message}`));
+    }
+  }
+
+  async isCreateAccountLinkVisible() {
+    return await this.createAccountLink.isVisible();
   }
 }
