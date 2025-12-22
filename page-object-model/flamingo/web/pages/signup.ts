@@ -14,6 +14,7 @@ export class Signup {
   readonly jobSeekerLabel: Locator;
   readonly jobSeekerDescription: Locator;
   readonly continueButton: Locator;
+  readonly continueWithEmailButton: Locator;
   readonly emailInput: Locator;
 
   constructor(page: Page) {
@@ -27,6 +28,7 @@ export class Signup {
     this.jobSeekerLabel = page.locator(SIGNUP_LOCATORS.JOB_SEEKER_LABEL);
     this.jobSeekerDescription = page.locator(SIGNUP_LOCATORS.JOB_SEEKER_DESCRIPTION).first();
     this.continueButton = page.locator(SIGNUP_LOCATORS.CONTINUE_BUTTON).first();
+    this.continueWithEmailButton = page.locator(SIGNUP_LOCATORS.CONTINUE_WITH_EMAIL_BUTTON).first();
     this.emailInput = page.locator(SIGNUP_LOCATORS.EMAIL_INPUT).first();
   }
 
@@ -211,5 +213,37 @@ export class Signup {
 
   async getEmailValue() {
     return await this.emailInput.inputValue();
+  }
+
+  async clickContinueWithEmailButton() {
+    try {
+      await expect(this.continueWithEmailButton).toBeVisible({ timeout: 15000 });
+      
+      await this.continueWithEmailButton.scrollIntoViewIfNeeded();
+      
+      await this.page.waitForTimeout(500);
+      
+      await expect(this.continueWithEmailButton).toBeEnabled({ timeout: 15000 });
+      
+      await this.continueWithEmailButton.click();
+      
+      console.log(chalk.green('✅ Clicked Continue with email button'));
+      await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+    } catch (e: any) {
+      const isVisible = await this.continueWithEmailButton.isVisible().catch(() => false);
+      const isEnabled = await this.continueWithEmailButton.isEnabled().catch(() => false);
+      const count = await this.continueWithEmailButton.count();
+      const text = await this.continueWithEmailButton.textContent().catch(() => 'N/A');
+      console.log(chalk.red(`Continue with email button state - Visible: ${isVisible}, Enabled: ${isEnabled}, Count: ${count}, Text: ${text}`));
+      throw new Error(chalk.red(`Error clicking Continue with email button: ${e.message}`));
+    }
+  }
+
+  async isContinueWithEmailButtonVisible() {
+    return await this.continueWithEmailButton.isVisible();
+  }
+
+  async isContinueWithEmailButtonEnabled() {
+    return await this.continueWithEmailButton.isEnabled();
   }
 }

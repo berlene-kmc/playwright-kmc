@@ -39,6 +39,12 @@ test.describe('Signup - Flamingo', () => {
     
     const emailValue = await signup.getEmailValue();
     expect(emailValue).toBe(env.FLAMINGO_EMAIL);
+    
+    await expect(signup.continueWithEmailButton).toBeVisible({ timeout: 15000 });
+    
+    await signup.clickContinueWithEmailButton();
+    
+    await page.waitForLoadState('networkidle');
   });
 
 });

@@ -8,6 +8,7 @@ export const SIGNUP_LOCATORS = {
   JOB_SEEKER_LABEL: 'label[for="applicant"]',
   JOB_SEEKER_DESCRIPTION: 'div.relative.border-2.rounded-2xl:has(button[value="applicant"][id="applicant"]) p.text-sm',
   CONTINUE_BUTTON: 'button[data-slot="button"]:has-text("Continue")',
+  CONTINUE_WITH_EMAIL_BUTTON: 'button[data-slot="button"]:has-text("Continue with email"), button[type="submit"]:has-text("Continue with email")',
   EMAIL_INPUT: 'input[data-slot="input"][type="email"][id="email"], input[type="email"][id="email"], input[name="email"]',
 };
 
