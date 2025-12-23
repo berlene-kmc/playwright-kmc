@@ -48,16 +48,13 @@ export class JobPosts {
       if (this.page.isClosed()) {
         throw new Error('Page has been closed');
       }
-      
-      // Wait for page to be fully loaded
+
       await this.page.waitForLoadState('domcontentloaded');
-      
-      // Wait for network to be idle (with timeout to avoid hanging)
+ 
       await this.page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {
         console.log(chalk.yellow('⚠️ Network idle timeout, continuing...'));
       });
-      
-      // Try to find the search input with multiple strategies
+
       let searchInputFound = false;
       const selectors = [
         JOB_POSTS_LOCATORS.SEARCH_INPUT,
@@ -77,7 +74,6 @@ export class JobPosts {
           const locator = this.page.locator(selector);
           await expect(locator).toBeVisible({ timeout: 10000 });
           
-          // Update the searchInput locator to the found one
           this.searchInput = locator;
           searchInputFound = true;
           console.log(chalk.green(`✅ Found search input with selector: ${selector}`));
@@ -89,12 +85,10 @@ export class JobPosts {
       }
       
       if (!searchInputFound) {
-        // Take a screenshot for debugging
         await this.page.screenshot({ path: 'search-input-not-found.png', fullPage: true });
         throw new Error('Could not find search input with any of the attempted selectors');
       }
-      
-      // Wait a bit more to ensure it's fully interactive
+
       await this.page.waitForTimeout(500);
       
       await this.searchInput.fill(text);
