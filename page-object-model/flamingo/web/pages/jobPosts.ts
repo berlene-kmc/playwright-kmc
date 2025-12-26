@@ -343,4 +343,23 @@ export class JobPosts {
     }
   }
 
+  async loopThroughJobPosts() {
+    try {
+      const allJobCards = this.page.locator(JOB_POSTS_LOCATORS.FIRST_JOB_CARD);
+      const jobCardCount = await allJobCards.count();
+      
+      for (let i = 0; i < jobCardCount; i++) {
+        const jobCard = allJobCards.nth(i);
+        await jobCard.click();
+        await this.page.waitForLoadState('networkidle');
+        await this.page.goBack();
+        await this.page.waitForLoadState('networkidle');
+      }
+      
+      console.log(chalk.green(`✅ Looped through ${jobCardCount} job posts`));
+    } catch (e: any) {
+      throw new Error(chalk.red(`Error looping through job posts: ${e.message}`));
+    }
+  }
+
 }
