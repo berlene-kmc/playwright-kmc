@@ -1,19 +1,18 @@
 import { test } from '../fixtures/authFixtures';
-import { expect } from '@playwright/test';
+import { env } from '../../config/env.config';
 
 test.describe('Dashboard Tests', () => {
 
-  test('Open user profile and check dashboard button', async ({ dashboard, page }) => {
+  test('Open user profile and check dashboard button', async ({ dashboard, assertEndpoint }) => {
     console.log('Test started');
 
-    // Set up API listener BEFORE navigation actions
-    const apiPromise = dashboard.waitForProworkingPremiumListAPI();
-
-    await dashboard.goToBoardroomLocation();
-
-    // Wait for the API call to complete
-    await apiPromise;
-
+    await assertEndpoint.assertEndpoint(
+      env.API_PROWORKING_PREMIUM_LIST_FULL,
+      200,
+      async () => {
+        await dashboard.goToBoardroomLocation();
+      }
+    );
   });
 
 });

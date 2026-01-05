@@ -9,15 +9,7 @@ test.describe('Signup Tests', () => {
 
     await page.goto(env.SIGNUP_URL); 
 
-    // await signup.clickContinueButton();
-
-    // await expect(page).toHaveURL(/accounts\.google\.com/);');
-
-    // await signup.clickNextButton();
-
     await signup.completeSignup("berlene.bernabe@kmc.solutions", "Berlene", "Bernabe", "Software Engineer", "StrongPassword123!", "StrongPassword123!");   
-
-    // await page.pause();
 
   });
 

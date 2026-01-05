@@ -85,8 +85,6 @@ export class LoginSignupPage {
     await this.clickButton(this.submitButton, 'submit button');
   }
 
-  ////////////////////////////////////////////////////////////////////////////
-
   async clickSignupButton() {
     await this.clickButton(this.signupButton, 'signup button');
   }

@@ -12,7 +12,6 @@ export class RoomSelection {
   private checkoutButton: Locator;
   private emailInput: Locator;
   private continueButton: Locator;
-  // private nextDayButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -46,10 +45,6 @@ export class RoomSelection {
     this.continueButton = page.locator(  
       '//button[contains(text(), "Continue to Checkout")]'
     );
-
-    // this.nextDayButton = page.locator(
-    //   '//button[.//svg[contains(@class, "lucide-chevron-right")]]'
-    // );
   }
 
   async goto() {
@@ -225,14 +220,12 @@ export class RoomSelection {
 
   async clickNextDayButton() {
     try {
-      // Wait for calendar to load fully
       await this.page.locator('.calendar-container').waitFor({ state: 'visible', timeout: 20000 });
 
       const nextDayButton = this.page.locator(
         '(//button[.//svg[contains(@class, "lucide-chevron-right")]])[1]'
       );
 
-      // Wait for the button to appear
       await nextDayButton.waitFor({ state: 'visible', timeout: 15000 });
       await nextDayButton.scrollIntoViewIfNeeded();
       await this.page.waitForTimeout(500); // wait for animations
@@ -253,8 +246,6 @@ export class RoomSelection {
       await this.verifyBoardroom();
       await this.clickBoardroomCard();
       await this.verifyRoomAvailability(); 
-      // await this.clickDate();
-      // await this.clickNextDayButton();
       await this.clickTime();
       await this.clickConfirmReservation();
       await this.clickProceedToCheckout();
@@ -262,8 +253,6 @@ export class RoomSelection {
       await this.clickContinueButton(); 
 
       console.log(chalk.green('🎉 Reservation Flow Completed Successfully'));
-
-      // await this.page.pause();
 
     } catch (e: any) {
       throw new Error(chalk.red(`Error completing reservation flow: ${e.message}`));

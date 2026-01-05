@@ -26,40 +26,6 @@ export class Signup {
     this.continueButton = this.page.locator('//button[contains(text(), "Continue")]');
   }
 
-// GOOGLE SIGN UP
-//   async clickContinueButton() {
-//     try {
-//       await expect(this.googleButton).toBeVisible();
-//       await this.googleButton.click();
-//       console.log(chalk.green('✅ Clicked Google Signup Button'));
-
-//     } catch (e: any) {
-//       throw new Error(chalk.red(`Error clicking Google Signup Button: ${e.message}`));
-//     }
-//   }
-
-//   async inputEmailAddress(email: string) {
-//     try {
-//       await expect(this.inputEmail).toBeVisible();
-//       await this.inputEmail.fill(email);
-//       console.log(chalk.green(`✅ Filled Email Address: ${email}`));  
-
-//     } catch (e: any) {
-//       throw new Error(chalk.red(`Error filling Email Address: ${e.message}`));
-//     }
-//   }
-
-//   async clickNextButton() {
-//     try {
-//       await expect(this.nextButton).toBeVisible();
-//       await this.nextButton.click();
-//       console.log(chalk.green('✅ Clicked Next Button'));
-      
-//     } catch (e: any) {
-//       throw new Error(chalk.red(`Error clicking Next Button: ${e.message}`));
-//     }
-//   } 
-
   async inputEmailAddress(email: string) {
     try {
       await expect(this.inputEmail).toBeVisible();

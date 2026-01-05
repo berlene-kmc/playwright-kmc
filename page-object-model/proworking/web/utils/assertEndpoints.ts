@@ -27,7 +27,6 @@ export class AssertEndpoint {
       }
 
       expect(response.status(), `Expected status ${statusCode}`).toBe(statusCode);
-      expect(response.ok(), "Response is not OK").toBeTruthy();
 
       console.log(`✅ API Endpoint "${endpoint}" returned status ${statusCode}`);
 
@@ -56,6 +55,8 @@ export class AssertEndpoint {
           console.error("Error reading body:", err);
         }
       }
+      
+      throw e;
     }
   }
 
