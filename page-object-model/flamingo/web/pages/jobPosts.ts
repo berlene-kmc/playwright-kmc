@@ -2,6 +2,7 @@ import { Page, Locator, expect } from '@playwright/test';
 import chalk from 'chalk';
 import { JOB_POSTS_LOCATORS } from '../utils/jobPosts.locators';
 import { env } from '../../../config/env.config';
+import { AssertEndpoint } from '../utils/assertEndpoints';
 
 export class JobPosts {
   private page: Page;
@@ -260,25 +261,24 @@ export class JobPosts {
   }
 
   async assertJobPostAPIs() {
-    try {
-      if (this.page.isClosed()) {
-        console.log(chalk.yellow('⚠️ Page is closed, skipping API assertion'));
-        return;
+    const assertEndpoint = new AssertEndpoint(this.page);
+    
+    const apiPromises = [
+      this.page.waitForResponse((res) => res.url().includes('/api/Users/business'), { timeout: 10000 }).catch(() => null),
+      this.page.waitForResponse((res) => res.url().includes('/api/Users/current-user'), { timeout: 10000 }).catch(() => null),
+      this.page.waitForResponse((res) => res.url().includes('/api/References/repetition'), { timeout: 10000 }).catch(() => null),
+    ];
+    
+    await this.goto();
+    
+    const responses = await Promise.allSettled(apiPromises);
+    
+    responses.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value) {
+        const endpoints = ['/api/Users/business', '/api/Users/current-user', '/api/References/repetition'];
+        assertEndpoint.validateResponse(result.value, endpoints[index], 200);
       }
-      
-      console.log(chalk.cyan('🔍 Asserting job post APIs...'));
-      
-      const responses = await Promise.allSettled([
-        this.page.waitForResponse((res) => res.url().includes('/api/Users/business') && res.status() === 200, { timeout: 5000 }).catch(() => {}),
-        this.page.waitForResponse((res) => res.url().includes('/api/Users/current-user') && res.status() === 200, { timeout: 5000 }).catch(() => {}),
-        this.page.waitForResponse((res) => res.url().includes('/api/References/repetition') && res.status() === 200, { timeout: 5000 }).catch(() => {}),
-      ]);
-
-      const successful = responses.filter(r => r.status === 'fulfilled').length;
-      console.log(chalk.green(`✅ ${successful}/${responses.length} job post APIs returned 200 status`));
-    } catch (e: any) {
-      console.log(chalk.yellow(`⚠️ Error asserting job post APIs: ${e.message}`));
-    }
+    });
   }
 
   async waitForJobCardAPIs(jobSlug?: string) {
@@ -313,34 +313,34 @@ export class JobPosts {
   }
 
   async assertJobCardAPIs(jobSlug?: string) {
-    try {
-      if (this.page.isClosed()) {
-        console.log(chalk.yellow('⚠️ Page is closed, skipping API assertion'));
-        return;
-      }
-      
-      console.log(chalk.cyan('🔍 Asserting job card APIs...'));
-      
-      const apiChecks = [
-        this.page.waitForResponse((res) => res.url().includes('/api/jobs/job-sources') && res.status() === 200, { timeout: 10000 }).catch(() => {}),
-        this.page.waitForResponse((res) => res.url().includes('/api/Common/antiforgery/token') && res.status() === 200, { timeout: 10000 }).catch(() => {}),
-        this.page.waitForResponse((res) => res.url().includes('/api/References/work-setup') && res.status() === 200, { timeout: 10000 }).catch(() => {}),
-        this.page.waitForResponse((res) => res.url().includes('/api/References/career-levels') && res.status() === 200, { timeout: 10000 }).catch(() => {}),
-      ];
-
-      if (jobSlug) {
-        apiChecks.push(
-          this.page.waitForResponse((res) => res.url().includes(`/api/jobs/apply/${jobSlug}`) && res.status() === 200, { timeout: 10000 }).catch(() => {}),
-          this.page.waitForResponse((res) => res.url().includes(`/api/jobs/category/${jobSlug}`) && res.status() === 200, { timeout: 10000 }).catch(() => {})
-        );
-      }
-      
-      const responses = await Promise.allSettled(apiChecks);
-      const successful = responses.filter(r => r.status === 'fulfilled').length;
-      console.log(chalk.green(`✅ ${successful}/${responses.length} job card APIs returned 200 status`));
-    } catch (e: any) {
-      console.log(chalk.yellow(`⚠️ Error asserting job card APIs: ${e.message}`));
+    const assertEndpoint = new AssertEndpoint(this.page);
+    
+    const apiPromises = [
+      this.page.waitForResponse((res) => res.url().includes('/api/jobs/job-sources'), { timeout: 10000 }).catch(() => null),
+      this.page.waitForResponse((res) => res.url().includes('/api/Common/antiforgery/token'), { timeout: 10000 }).catch(() => null),
+      this.page.waitForResponse((res) => res.url().includes('/api/References/work-setup'), { timeout: 10000 }).catch(() => null),
+      this.page.waitForResponse((res) => res.url().includes('/api/References/career-levels'), { timeout: 10000 }).catch(() => null),
+    ];
+    
+    if (jobSlug) {
+      apiPromises.push(
+        this.page.waitForResponse((res) => res.url().includes(`/api/jobs/apply/${jobSlug}`), { timeout: 10000 }).catch(() => null),
+        this.page.waitForResponse((res) => res.url().includes(`/api/jobs/category/${jobSlug}`), { timeout: 10000 }).catch(() => null)
+      );
     }
+    
+    const responses = await Promise.allSettled(apiPromises);
+    
+    const endpoints = ['/api/jobs/job-sources', '/api/Common/antiforgery/token', '/api/References/work-setup', '/api/References/career-levels'];
+    if (jobSlug) {
+      endpoints.push(`/api/jobs/apply/${jobSlug}`, `/api/jobs/category/${jobSlug}`);
+    }
+    
+    responses.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value) {
+        assertEndpoint.validateResponse(result.value, endpoints[index], 200);
+      }
+    });
   }
 
   async loopThroughJobPosts() {

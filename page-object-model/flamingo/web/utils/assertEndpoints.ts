@@ -76,5 +76,10 @@ export class AssertEndpoint {
 
     console.log("✅ API found:", response.url());
   }
+
+  validateResponse(response: Response, endpoint: string, statusCode: number): void {
+    expect(response.status(), `Expected status ${statusCode} for ${endpoint}`).toBe(statusCode);
+    console.log(`✅ API Endpoint "${endpoint}" returned status ${statusCode}`);
+  }
 }
 
