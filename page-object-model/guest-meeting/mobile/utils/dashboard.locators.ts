@@ -6,3 +6,4 @@ export const DASHBOARD_LOCATORS = {
   BOARD_ROOM_BUTTON: '//button[contains(.,\'Get Started\')]',
 };
 
+

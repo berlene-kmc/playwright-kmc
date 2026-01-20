@@ -119,6 +119,7 @@ export class JobPosts {
         return;
       }
       
+      console.log()
       await expect(this.searchButton).toBeVisible({ timeout: 15000 });
       await this.searchButton.click({ force: true });
       console.log(chalk.green('✅ Clicked search button (SVG)'));
@@ -196,6 +197,7 @@ export class JobPosts {
             { timeout: 30000 }
           );
         });
+        
         console.log(chalk.green(`✅ Navigated to job detail page: ${this.page.url()}`));
       } else {
         await this.page.waitForFunction(
