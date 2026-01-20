@@ -17,7 +17,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
  */
 export default defineConfig({
   // testDir: './page-object-model/tests-api',
-  testDir: './page-object-model/flamingo/web/tests',
+  testDir: './page-object-model/dev-partners/web/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
