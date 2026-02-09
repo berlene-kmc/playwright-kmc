@@ -1,5 +1,5 @@
 import { Page, Response, expect } from "@playwright/test";
-import { env } from '../../config/env.config';
+import { env } from '../../../config/env.config';
 
 export class AssertEndpoint {
   private page: Page;

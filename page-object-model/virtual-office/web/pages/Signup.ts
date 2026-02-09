@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 import chalk from 'chalk';
-import { LOGIN_SIGNUP_LOCATORS } from '../utils/loginSignup.locators';
+import { SIGNUP_LOCATORS } from '../utils/signup.locators';
 
 export class Signup {
   private page: Page;
@@ -15,14 +15,14 @@ export class Signup {
 
   constructor(page: Page) {
     this.page = page;
-    this.signupButton = page.locator(LOGIN_SIGNUP_LOCATORS.SIGNUP_BUTTON);
-    this.signupEmailInput = page.locator(LOGIN_SIGNUP_LOCATORS.SIGNUP_EMAIL);
-    this.firstNameInput = page.locator(LOGIN_SIGNUP_LOCATORS.FIRST_NAME);
-    this.lastNameInput = page.locator(LOGIN_SIGNUP_LOCATORS.LAST_NAME);
-    this.jobTitleInput = page.locator(LOGIN_SIGNUP_LOCATORS.JOB_TITLE);
-    this.signupPasswordInput = page.locator(LOGIN_SIGNUP_LOCATORS.SIGNUP_PASSWORD);
-    this.confirmPasswordInput = page.locator(LOGIN_SIGNUP_LOCATORS.CONFIRM_PASSWORD);
-    this.continueButton = page.locator(LOGIN_SIGNUP_LOCATORS.CONTINUE_BUTTON);
+    this.signupButton = page.locator(SIGNUP_LOCATORS.SIGNUP_BUTTON);
+    this.signupEmailInput = page.locator(SIGNUP_LOCATORS.SIGNUP_EMAIL);
+    this.firstNameInput = page.locator(SIGNUP_LOCATORS.FIRST_NAME);
+    this.lastNameInput = page.locator(SIGNUP_LOCATORS.LAST_NAME);
+    this.jobTitleInput = page.locator(SIGNUP_LOCATORS.JOB_TITLE);
+    this.signupPasswordInput = page.locator(SIGNUP_LOCATORS.SIGNUP_PASSWORD);
+    this.confirmPasswordInput = page.locator(SIGNUP_LOCATORS.CONFIRM_PASSWORD);
+    this.continueButton = page.locator(SIGNUP_LOCATORS.CONTINUE_BUTTON);
   }
 
   private async fillInput(locator: Locator, value: string, label: string) {

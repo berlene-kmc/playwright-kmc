@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import chalk from 'chalk';
-import { LOGIN_SIGNUP_LOCATORS } from '../utils/loginSignup.locators';
-import { env } from '../../config/env.config';
+import { LOGIN_LOCATORS } from '../utils/login.locators';
+import { env } from '../../../config/env.config';
 
 export class Login {
   private page: Page;
@@ -12,10 +12,10 @@ export class Login {
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = page.locator(LOGIN_SIGNUP_LOCATORS.EMAIL);
-    this.passwordInput = page.locator(LOGIN_SIGNUP_LOCATORS.PASSWORD);
-    this.agreeButton = page.locator(LOGIN_SIGNUP_LOCATORS.AGREE_BUTTON);
-    this.submitButton = page.locator(LOGIN_SIGNUP_LOCATORS.SUBMIT_BUTTON);
+    this.emailInput = page.locator(LOGIN_LOCATORS.EMAIL);
+    this.passwordInput = page.locator(LOGIN_LOCATORS.PASSWORD);
+    this.agreeButton = page.locator(LOGIN_LOCATORS.AGREE_BUTTON);
+    this.submitButton = page.locator(LOGIN_LOCATORS.SUBMIT_BUTTON);
   }
 
   async goto() {
