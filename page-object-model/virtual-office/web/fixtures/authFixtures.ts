@@ -2,7 +2,7 @@ import { test as baseTest } from '@playwright/test';
 import { Login } from '../pages/Login';
 import { Signup } from '../pages/Signup';
 import { Dashboard } from '../pages/Dashboard';
-import { AssertEndpoint } from '../utils/assetEndpoints';
+import { AssertEndpoint } from '../utils/assertEndpoints';
 
 type AuthFixtures = {
   loginPage: Login;

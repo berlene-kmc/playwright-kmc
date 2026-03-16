@@ -1,10 +1,12 @@
 import { Page, expect, Locator } from '@playwright/test';
 import chalk from 'chalk';
 import { DASHBOARD_LOCATORS } from '../utils/dashboard.locators';
-import { env } from '../../config/env.config';
+import { env } from '../../../config/env.config';
+import { AssertEndpoint } from '../utils/assertEndpoints';
 
 export class Dashboard {
   private page: Page;
+  private assertEndpoint: AssertEndpoint;
   public solutionsDropdown: Locator;
   public proworkingButton: Locator;
   public getStartedButton: Locator;
@@ -12,6 +14,7 @@ export class Dashboard {
 
   constructor(page: Page) {
     this.page = page;
+    this.assertEndpoint = new AssertEndpoint(page);
 
     const locators = [
       { key: 'solutionsDropdown', selector: DASHBOARD_LOCATORS.SOLUTIONS_DROPDOWN },
@@ -77,6 +80,16 @@ export class Dashboard {
     await this.clickBoardRoom();
   }
 
+  async goToBoardroomLocationWithApiAssert() {
+    await this.assertEndpoint.assertEndpoint(
+      env.API_PROWORKING_PREMIUM_LIST_FULL,
+      200,
+      async () => {
+        await this.goToBoardroomLocation();
+      }
+    );
+  }
+
   async waitForProworkingPremiumListAPI() {
     const apiUrl = env.API_PROWORKING_PREMIUM_LIST_FULL;
     console.log(chalk.cyan(`🔍 Waiting for API: ${apiUrl}`));
@@ -93,7 +106,7 @@ export class Dashboard {
         },
         { timeout: 60000 }
       );
-      console.log(chalk.green(`✅ Proworking Premium List API call successful - Status: ${response.status()}`));
+      this.assertEndpoint.validateResponse(response, apiUrl, 200);
       return response;
       
     } catch (e: any) {
